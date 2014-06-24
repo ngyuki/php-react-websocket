@@ -8,8 +8,9 @@ Example
  - [example/ws.php](example/ws.php)
 
 ```console
-$ git clone https://github.com/ngyuki/react-websocket.git
-$ cd react-websocket
+$ git clone https://github.com/ngyuki/php-react-websocket.git
+$ cd php-react-websocket
+$ composer install --no-dev
 $ php example/ws.php
 ```
 
