@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <style>
+        .info {
+            color: #ccc;
+        }
+        .self {
+            color: #00f;
+        }
+        .error {
+            color: #f00;
+        }
+        #message {
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+
+<form id="form">
+    <label><input id="message" type="text"></label>
+    <button type="submit">SEND</button>
+</form>
+<pre id="logs"></pre>
+
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script language="javascript" type="text/javascript">
+$(function(){
+    'use strict';
+
+    var url = "ws://" + location.hostname + ":4444/server.php";
+    var webSocket = new WebSocket(url);
+    var logger = {};
+
+    var $logs = $('#logs');
+    var $message = $('#message');
+
+    logger.log = function (data) {
+        var $elem = $('<div></div>');
+
+        if (data.type)
+        {
+            $elem.addClass(data.type);
+        }
+
+        $elem.text(data.message).appendTo('#logs');
+
+        while ($logs.children().size() > 100)
+        {
+            $logs.children().last().remove();
+        }
+    };
+
+    logger.message = function (message) {
+        this.log({message: message});
+    };
+
+    logger.info = function (message) {
+        this.log({type:'info', message:message});
+    };
+
+    logger.error = function (message) {
+        this.log({type:'error', message:message});
+    };
+
+    $(webSocket).on('open', function (ev) {
+        //logger.info("connection!");
+    });
+
+    $(webSocket).on('error', function (ev) {
+        logger.error(ev.data);
+    });
+
+    $(webSocket).on('close', function (ev) {
+        //logger.error("disconnect!");
+    });
+
+    $(webSocket).on('message', function (ev) {
+        var data = JSON.parse(ev.originalEvent.data);
+        logger.log(data);
+    });
+
+    $('#form').on('submit', function (ev) {
+        ev.preventDefault();
+        webSocket.send(JSON.stringify({ message: $message.val() }));
+        $message.val("").focus();
+    });
+});
+</script>
+
+</body>
+</html>

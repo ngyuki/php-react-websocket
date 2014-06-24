@@ -1,0 +1,20 @@
+{
+    "name": "ngyuki/react-websocket",
+    "description": "react websocket",
+    "type": "library",
+    "keywords": [ "react", "websocket" ],
+    "homepage": "https://github.com/ngyuki/php-react-websocket",
+    "license": "MIT",
+    "authors": [
+        { "name": "ngyuki", "email": "ngyuki.ts@gmail.com" }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ngyuki\\React\\WebSocket\\": "src/"
+        }
+    },
+    "require": {
+        "react/react": "*",
+        "wrench/wrench": "*"
+    }
+}
